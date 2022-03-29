@@ -1,0 +1,36 @@
+html,body{
+    padding: 0px;
+    margin: 0px;
+}
+
+body{
+    margin: 20px;
+}
+
+#codeEditor{
+    border: 1px solid black; 
+    border-radius: 5px;
+    height: 80vh;
+}
+
+.output{
+    border: 1px solid black; 
+    border-radius: 5px;
+    padding: 5px;
+}
+
+textarea{
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+#codeInput {
+    white-space: pre-wrap;
+}
+
+#codeOutput {
+    white-space: pre-wrap;
+    overflow-y: scroll;
+    overflow-x: scroll;
+}
