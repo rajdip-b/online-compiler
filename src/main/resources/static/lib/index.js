@@ -132,6 +132,7 @@ function onLanguageChanged(e){
         case "python": codeEditor.setValue(existingPythonCode); codeEditor.session.setMode("ace/mode/python"); break;
         default: break;
     }
+    $("#codeOutput").val('Run the code for an output.');
 }
 
 function onThemeChanged(e){
