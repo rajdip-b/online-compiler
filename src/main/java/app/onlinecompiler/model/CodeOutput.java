@@ -9,5 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CodeOutput {
 //    public double executionTime;
+    public String status;
     public String output;
 }

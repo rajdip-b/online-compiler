@@ -49,6 +49,7 @@ public class PythonCodeRunner{
 
     public CodeOutput execute() {
         try{
+            boolean failed = false;
             Runtime rt = Runtime.getRuntime();
             String[] commands = {
                     "/bin/bash",
@@ -69,14 +70,18 @@ public class PythonCodeRunner{
             StringJoiner output = new StringJoiner(System.lineSeparator());
             while ((s = stdError.readLine()) != null) {
                 output.add(s);
+                failed = true;
             }
             while ((s = stdInput.readLine()) != null) {
                 output.add(s);
             }
             FileUtils.deleteDirectory(folder);
-            return new CodeOutput(output.toString());
+            if (failed)
+                return new CodeOutput("failure", output.toString());
+            else
+                return new CodeOutput("success", output.toString());
         }catch (IOException e){
-            return new CodeOutput(e.getLocalizedMessage());
+            return new CodeOutput("failure", e.getLocalizedMessage());
         }
     }
 }

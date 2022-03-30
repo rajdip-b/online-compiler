@@ -1,5 +1,10 @@
 let codeEditor = null;
 
+let defaultJavaText = null;
+let defaultCPPText = null;
+let defaultCCode = null;
+let defaultPythonCode = null;
+
 let existingJavaCode = null;
 let existingCCode = null;
 let existingCPPCode = null;
@@ -15,6 +20,9 @@ function initializeElements(){
     $('#listLanguage').val('java');
     $('#listTheme').val('light');
     $('#codeInput').val('');
+    $("#execStatus").hide();
+    $("#compilationSuccess").hide();
+    $("#compilationFailed").hide();
     codeEditor.session.setMode("ace/mode/java");
 }
 
@@ -24,6 +32,7 @@ function initializeDefaultTexts(){
         url: '/text/java',
         type: 'GET',
         success: function(data){
+            defaultJavaText = data;
             existingJavaCode = data;
             codeEditor.setValue(existingJavaCode);
         },
@@ -37,6 +46,7 @@ function initializeDefaultTexts(){
         url: '/text/c',
         type: 'GET',
         success: function(data){
+            defaultCCode = data;
             existingCCode = data;
         },
         error: function(jqXHR, status){
@@ -49,6 +59,7 @@ function initializeDefaultTexts(){
         url: '/text/cpp',
         type: 'GET',
         success: function(data){
+            defaultCPPText = data;
             existingCPPCode = data;
         },
         error: function(jqXHR, status){
@@ -61,6 +72,7 @@ function initializeDefaultTexts(){
         url: '/text/python',
         type: 'GET',
         success: function(data){
+            defaultPythonCode = data;
             existingPythonCode = data;
         },
         error: function(jqXHR, status){
@@ -85,7 +97,14 @@ function configureAce(){
     editorLib.init();
 }
 
+function onCloseClicked(e){
+    $(e).parent().fadeOut();
+}
+
 function onRunClicked(){
+    hideCompilationMessages();
+    $("#execStatus").fadeIn();
+    $("#btnRun").prop("disabled", true);
     let language = $("#listLanguage").find(":selected").text();
     let code = codeEditor.getValue();
     let input = $("#codeInput").val();
@@ -99,17 +118,43 @@ function onRunClicked(){
         }),
         contentType: 'application/json',
         success: function (data) { 
+            if (data.status == 'success'){
+                $("#compilationSuccess").fadeIn();
+            }else{
+                $("#compilationFailed").fadeIn();
+            }
             $("#codeOutput").text(data.output);
         },
         error: function (jqXHR, status, thrown) {
-            console.log(jqXHR+" "+status+" "+thrown);
-            alert(jqXHR.data);
+            alert("Error connecting to the server!");
+            $("#compilationFailed").fadeIn();
+        },
+        complete: function(){
+            $("#execStatus").fadeOut();
+            $("#btnRun").prop("disabled", false);
         }
     });
 }
 
 function onResetClicked(){
-    codeEditor.setValue("");
+    let language = $("#listLanguage").find(":selected").text();
+    switch(language){
+        case "Java": existingJavaCode = defaultJavaText; codeEditor.setValue(existingJavaCode); break;
+        case "C++": existingCPPCode = defaultCPPCode; codeEditor.setValue(existingCPPCode); break;
+        case "C": existingCCode = defaultCCode; codeEditor.setValue(existingCCode); break;
+        case "Python": existingPythonCode = existingPythonCode; codeEditor.setValue(existingPythonCode); break;
+        default: break;
+    }
+    hideCompilationMessages();
+}
+
+function hideCompilationMessages(){
+    if ($("#compilationFailed").is(":visible")){
+        $("#compilationFailed").fadeOut();
+    }
+    if ($("#compilationSuccess").is(":visible")){
+        $("#compilationSuccess").fadeOut();
+    }
 }
 
 function onLanguageSelectionClicked(e){
@@ -133,6 +178,7 @@ function onLanguageChanged(e){
         default: break;
     }
     $("#codeOutput").val('Run the code for an output.');
+    hideCompilationMessages();
 }
 
 function onThemeChanged(e){
@@ -156,6 +202,18 @@ function onThemeChanged(e){
 
         $("#codeOutput").removeClass("text-black bg-light");
         $("#codeOutput").addClass("text-white bg-secondary");
+
+        $("#execStatus").removeClass("text-primary");
+        $("#execStatus").addClass("text-white bg-primary");
+
+        $("#compilationSuccess").removeClass("text-success");
+        $("#compilationSuccess").addClass("bg-success text-white");
+
+        $("#compilationFailed").removeClass("text-danger");
+        $("#compilationFailed").addClass("bg-danger text-white");
+
+        $("#btnClose").removeClass("btn-close-black");
+        $("#btnClose").addClass("btn-close-white");
     }else{
         codeEditor.setTheme("ace/theme/clouds");
 
@@ -171,11 +229,22 @@ function onThemeChanged(e){
         $("select").removeClass("text-white bg-dark");
         $("select").addClass("text-black bg-white");
 
-
         $("#codeInput").removeClass("text-white bg-secondary");
         $("#codeInput").addClass("text-black bg-light");
 
         $("#codeOutput").removeClass("text-white bg-secondary");
         $("#codeOutput").addClass("text-black bg-light");
+
+        $("#execStatus").removeClass("text-white bg-primary");
+        $("#execStatus").addClass("text-primary");
+
+        $("#compilationSuccess").removeClass("bg-success text-white");
+        $("#compilationSuccess").addClass("text-success");
+
+        $("#compilationFailed").removeClass("bg-danger text-white");
+        $("#compilationFailed").addClass("text-danger");
+        
+        $("#btnClose").removeClass("btn-close-white");
+        $("#btnClose").addClass("btn-close-black");
     }
 }

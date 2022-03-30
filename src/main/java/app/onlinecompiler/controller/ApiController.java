@@ -23,7 +23,7 @@ public class ApiController {
             case "C++": return new CPPCodeRunner(codeInput).execute();
             case "C": return new CCodeRunner(codeInput).execute();
             case "Python": return new PythonCodeRunner(codeInput).execute();
-            default: return new CodeOutput("That language isn't supported yet!");
+            default: return new CodeOutput("failure", "That language isn't supported yet!");
         }
     }
 

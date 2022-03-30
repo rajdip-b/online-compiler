@@ -8,21 +8,7 @@ body{
 }
 
 #codeEditor{
-    border: 1px solid black; 
-    border-radius: 5px;
     height: 80vh;
-}
-
-.output{
-    border: 1px solid black; 
-    border-radius: 5px;
-    padding: 5px;
-}
-
-textarea{
-    border: 1px solid black;
-    border-radius: 5px;
-    padding: 5px;
 }
 
 #codeInput {

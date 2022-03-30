@@ -61,6 +61,7 @@ public class JavaCodeRunner{
 
     public CodeOutput execute() {
         try{
+            boolean failed = false;
             Runtime rt = Runtime.getRuntime();
             String[] commands = {
                     "/bin/bash",
@@ -81,16 +82,20 @@ public class JavaCodeRunner{
             StringJoiner output = new StringJoiner(System.lineSeparator());
             while ((s = stdError.readLine()) != null) {
                 output.add(s);
+                failed = true;
             }
             while ((s = stdInput.readLine()) != null) {
                 output.add(s);
             }
             FileUtils.deleteDirectory(folder);
-            return new CodeOutput(output.toString());
+            if (failed)
+                return new CodeOutput("failure", output.toString());
+            else
+                return new CodeOutput("success", output.toString());
         }catch (StringIndexOutOfBoundsException e){
-            return new CodeOutput("Class name not found! Please use a single public class.");
+            return new CodeOutput("failure", "Class name not found! Please use a single public class.");
         }catch (IOException e){
-            return new CodeOutput(e.getLocalizedMessage());
+            return new CodeOutput("failure", e.getLocalizedMessage());
         }
     }
 }

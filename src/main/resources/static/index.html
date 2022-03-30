@@ -20,36 +20,46 @@
     <script src="https://d21kkv08caclr3.cloudfront.net/online-compiler/index.js"></script>
     <title>Online CodeCompiler</title>
 </head>
-<body class="container">
+<body class="container p-3">
     <div class="top-section row mt-5">
-        <span class="col-md">Select language: </span>
-        <select id="listLanguage" class="form-select col-md" style="margin-right: 10%;" onchange="onLanguageChanged(this)" onclick="onLanguageSelectionClicked(this)">
+        <span class="col-lg col-md-3 mb-2">Select language: </span>
+        <select id="listLanguage" class="form-select col-lg col-md-auto mb-2" style="margin-right: 10%;" onchange="onLanguageChanged(this)" onclick="onLanguageSelectionClicked(this)">
             <option value="java">Java</option>
             <option value="cpp">C++</option>
             <option value="c">C</option>
             <option value="python">Python</option>
         </select>
-        <span class="col-md">Theme: </span>
-        <select name="" id="listTheme" class="form-select col-md" onchange="onThemeChanged(this)">
+        <span class="col-lg col-md-3 mb-2">Theme: </span>
+        <select name="" id="listTheme" class="form-select col-lg col-md-auto mb-2" onchange="onThemeChanged(this)">
             <option value="light">Light</option>
             <option value="dark">Dark</option>
         </select>
     </div>
     <div class="code-section row mt-5">
-        <div class="left-section col-md code-editor-section" style="margin-right: 5%;">
+        <div class="left-section col-lg code-editor-section" style="margin-right: 5%;">
             <span class="h5 col mb-4">Write your code here</span>
-            <div id="codeEditor" class="col w-100 mt-3"></div>
+            <div id="codeEditor" class="border rounded border-grey col w-100 mt-3 mb-3"></div>
         </div>
         <div class="right-section col-md">
             <span class="h5 col mb-4">Code input</span>
-            <textarea id="codeInput" class="row w-100 mt-3 bg-light" name="" id="" cols="30" rows="10"></textarea>
+            <textarea id="codeInput" class="border rounded border-grey row w-100 mt-3 bg-light" name="" id="" cols="30" rows="10"></textarea>
             <div class="buttons row justify-content-center mt-3 mb-3">
-                <button id="btnRun" style="margin-right: 10%;" class="col-md col-lg-4 btn btn-outline-success" onclick="onRunClicked()">Run</button>
-                <button id="btnReset" class="col-md col-lg-4 btn btn-outline-danger" onclick="onResetClicked()">Reset</button>
+                <button id="btnRun" class="col-8 col-sm-8 col-lg-4 btn btn-outline-success m-5 mb-2 mt-2" onclick="onRunClicked()">Run</button>
+                <button id="btnReset" class="col-8 col-sm-8 col-lg-4 btn btn-outline-danger m-5 mb-2 mt-2" onclick="onResetClicked()">Reset</button>
+            </div>
+            <div id="execStatus" class="row p-3 mb-3 mt-3 border border-primary text-primary rounded">Executing your code...</div>
+            <div id="compilationSuccess" class="row p-3 mb-3 mt-3 border border-success text-success rounded">
+                <div class="col">Compilation Successful!</div>
+                <button id="btnClose" type="button" class="btn-close btn-close-black align-self-end" aria-label="Close" onclick="onCloseClicked(this)"></button>
+            </div>
+            <div id="compilationFailed" class="row p-3 mb-3 mt-3 border border-danger text-danger rounded">
+                <div class="col">Compilation Failed!</div>
+                <button id="btnClose" type="button" class="btn-close btn-close-black align-self-end" aria-label="Close" onclick="onCloseClicked(this)"></button>
             </div>
             <span class="h5 col mb-4">Code output</span>
-            <div id="codeOutput" class="output bg-light h-50 mt-3">Run the code for an output.</div>
+            <div id="codeOutput" class="border rounded border-grey output bg-light h-50 mt-3 p-3">Run the code for an output.</div>
         </div>
+    </div>
     </div>
 </body>
 </html>
