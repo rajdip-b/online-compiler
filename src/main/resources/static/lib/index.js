@@ -141,6 +141,7 @@ function onRunClicked(){
 }
 
 function onLoadCodeClicked(){
+    $("#btnLoadCode").prop("disabled", true);
     hideStatusMessages();
     $("#statusLoadingCode").fadeIn();
     let tag = $("#txtCodeTag").val();
@@ -153,6 +154,7 @@ function onLoadCodeClicked(){
                     $("#statusLoadedCode").fadeIn();
                     codeEditor.setValue(data.code, 1);
                     $("#listLanguage").val(data.codeLanguage);
+                    $("#codeInput").val(data.codeInput);
                     onLanguageSelectionClicked();
                     onLanguageChanged({value: data.codeLanguage});
                     $("#modalDesc").text(data.codeDescription);
@@ -167,6 +169,7 @@ function onLoadCodeClicked(){
             complete: function(){
                 $("#statusLoadingCode").fadeOut();
                 $("#txtCodeTag").val("");
+                $("#btnLoadCode").prop("disabled", false);
             }
         });
     }else{
@@ -177,11 +180,13 @@ function onLoadCodeClicked(){
 }
 
 function onSaveCodeClicked(){
+    $("#btnSaveCode").prop("disabled", true);
     hideStatusMessages();
     $("#statusSavingCode").fadeIn();
     let code = codeEditor.getValue();
     let codeLanguage = $("#listLanguage").val();
     let codeDescription = $("#txtDescription").val();
+    let input = $("#codeInput").val();
     $.ajax({
         url: '/save',
         type: 'POST',
@@ -189,7 +194,8 @@ function onSaveCodeClicked(){
         data: JSON.stringify({
             'code': code,
             'codeLanguage': codeLanguage,
-            'codeDescription': codeDescription
+            'codeDescription': codeDescription,
+            'codeInput': input
         }),
         success: function(data){
             $("#statusCodeSavedTxt").text("Your code was saved successfully. Here is your code tag: "+data);
@@ -201,6 +207,7 @@ function onSaveCodeClicked(){
         complete: function(){
             $("#statusSavingCode").fadeOut();
             $("#txtDescription").val("");
+            $("#btnSaveCode").prop("disabled", false);
         }
     });
 }

@@ -26,5 +26,6 @@ public class SavedCode {
     @JsonIgnore
     private Date expiresOn;
     private String codeDescription;
+    private String codeInput;
 
 }

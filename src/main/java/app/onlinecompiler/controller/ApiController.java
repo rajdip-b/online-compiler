@@ -1,13 +1,13 @@
 package app.onlinecompiler.controller;
 
-import app.onlinecompiler.SavedCodeService;
+import app.onlinecompiler.misc.SavedCodeService;
 import app.onlinecompiler.coderunner.CCodeRunner;
 import app.onlinecompiler.coderunner.CPPCodeRunner;
 import app.onlinecompiler.coderunner.PythonCodeRunner;
 import app.onlinecompiler.model.CodeInput;
 import app.onlinecompiler.model.CodeOutput;
 import app.onlinecompiler.coderunner.JavaCodeRunner;
-import app.onlinecompiler.model.DefaultEditorTexts;
+import app.onlinecompiler.misc.DefaultEditorTexts;
 import app.onlinecompiler.model.SavedCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;

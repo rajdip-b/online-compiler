@@ -1,13 +1,16 @@
-package app.onlinecompiler.model;
+package app.onlinecompiler.misc;
 
 public class DefaultEditorTexts {
 
     public static final String JAVA = "/*\n" +
             "\tMake sure to have only one class as public.\n" +
             "\tThis is the class that should contain the main function.\n" +
-            "*/\n\n" +
+            "*/\n" +
+            "\n" +
+            "import java.util.*;\n" +
+            "\n" +
             "public class MyClass {\n" +
-            "\tpublic static void main(String args[]) {\n\n" +
+            "\tpublic static void main(String args[]) {\n" +
             "\t}\n" +
             "}\n";
 

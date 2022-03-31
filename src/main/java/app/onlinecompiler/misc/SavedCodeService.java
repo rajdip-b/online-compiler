@@ -1,4 +1,4 @@
-package app.onlinecompiler;
+package app.onlinecompiler.misc;
 
 import app.onlinecompiler.model.SavedCode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,8 @@ public class SavedCodeService {
     private SavedCodeRepository savedCodeRepository;
 
     public String save(SavedCode savedCode){
-        savedCode.setExpiresOn(new Date());
+//        savedCode.setExpiresOn(new Date(new Date().getTime()+(30L *24*60*60*1000)));
+        savedCode.setExpiresOn(new Date(new Date().getTime()+(30L * 24 * 60 * 60 * 1000)));
         String codeTag = UUID.randomUUID().toString();
         savedCode.setCodeTag(codeTag);
         savedCodeRepository.save(savedCode);
