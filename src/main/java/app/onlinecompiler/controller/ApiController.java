@@ -1,5 +1,6 @@
 package app.onlinecompiler.controller;
 
+import app.onlinecompiler.SavedCodeService;
 import app.onlinecompiler.coderunner.CCodeRunner;
 import app.onlinecompiler.coderunner.CPPCodeRunner;
 import app.onlinecompiler.coderunner.PythonCodeRunner;
@@ -7,14 +8,16 @@ import app.onlinecompiler.model.CodeInput;
 import app.onlinecompiler.model.CodeOutput;
 import app.onlinecompiler.coderunner.JavaCodeRunner;
 import app.onlinecompiler.model.DefaultEditorTexts;
+import app.onlinecompiler.model.SavedCode;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class ApiController {
+
+    @Autowired
+    private SavedCodeService savedCodeService;
 
     @PostMapping(value = "/run", consumes = MediaType.APPLICATION_JSON_VALUE)
     public CodeOutput runCode(@RequestBody CodeInput codeInput){
@@ -25,6 +28,16 @@ public class ApiController {
             case "Python": return new PythonCodeRunner(codeInput).execute();
             default: return new CodeOutput("failure", "That language isn't supported yet!");
         }
+    }
+
+    @PostMapping(value = "/save", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public String saveCode(@RequestBody SavedCode savedCode){
+        return savedCodeService.save(savedCode);
+    }
+
+    @GetMapping(value = "/code", produces = MediaType.APPLICATION_JSON_VALUE)
+    public SavedCode getCodeByTag(@RequestParam("tag") String tag){
+        return savedCodeService.getCodeByTag(tag);
     }
 
     @GetMapping("/text/java")

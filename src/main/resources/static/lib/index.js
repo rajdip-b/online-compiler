@@ -20,9 +20,9 @@ function initializeElements(){
     $('#listLanguage').val('java');
     $('#listTheme').val('light');
     $('#codeInput').val('');
-    $("#execStatus").hide();
-    $("#compilationSuccess").hide();
-    $("#compilationFailed").hide();
+    $(".loading-card").hide();
+    $(".error-card").hide();
+    $(".success-card").hide();
     codeEditor.session.setMode("ace/mode/java");
 }
 
@@ -34,7 +34,7 @@ function initializeDefaultTexts(){
         success: function(data){
             defaultJavaText = data;
             existingJavaCode = data;
-            codeEditor.setValue(existingJavaCode);
+            codeEditor.setValue(existingJavaCode, 1);
         },
         error: function(jqXHR, status){
             console.log(status);
@@ -85,7 +85,7 @@ function configureAce(){
     codeEditor = ace.edit("codeEditor");
     let editorLib = {
         init(){
-            codeEditor.setTheme("ace/theme/clouds");
+            codeEditor.setTheme("ace/theme/dawn");
             codeEditor.setOptions({
                 enableBasicAutocompletion: true,
                 enableSnippets: true,
@@ -101,8 +101,12 @@ function onCloseClicked(e){
     $(e).parent().fadeOut();
 }
 
+function hideModal(){
+    $("#exampleModal").modal('toggle');
+}
+
 function onRunClicked(){
-    hideCompilationMessages();
+    hideStatusMessages();
     $("#execStatus").fadeIn();
     $("#btnRun").prop("disabled", true);
     let language = $("#listLanguage").find(":selected").text();
@@ -136,24 +140,104 @@ function onRunClicked(){
     });
 }
 
-function onResetClicked(){
-    let language = $("#listLanguage").find(":selected").text();
-    switch(language){
-        case "Java": existingJavaCode = defaultJavaText; codeEditor.setValue(existingJavaCode); break;
-        case "C++": existingCPPCode = defaultCPPCode; codeEditor.setValue(existingCPPCode); break;
-        case "C": existingCCode = defaultCCode; codeEditor.setValue(existingCCode); break;
-        case "Python": existingPythonCode = existingPythonCode; codeEditor.setValue(existingPythonCode); break;
-        default: break;
+function onLoadCodeClicked(){
+    hideStatusMessages();
+    $("#statusLoadingCode").fadeIn();
+    let tag = $("#txtCodeTag").val();
+    if (tag != ""){
+        $.ajax({
+            url: '/code?tag='+tag,
+            type: 'GET',
+            success: function(data){
+                if (data != ""){
+                    $("#statusLoadedCode").fadeIn();
+                    codeEditor.setValue(data.code, 1);
+                    $("#listLanguage").val(data.codeLanguage);
+                    onLanguageSelectionClicked();
+                    onLanguageChanged({value: data.codeLanguage});
+                    $("#modalDesc").text(data.codeDescription);
+                    $("#exampleModal").modal('show');
+                }else{
+                    $("#statusCodeDoesntExist").fadeIn();
+                }
+            },
+            error: function(){
+                $("#statusLoadingCodeFailed").fadeIn();
+            },
+            complete: function(){
+                $("#statusLoadingCode").fadeOut();
+                $("#txtCodeTag").val("");
+            }
+        });
+    }else{
+        alert("Can't load empty tags!");
+        $("#statusLoadingCode").fadeOut();
+        $("#txtCodeTag").val("");
     }
-    hideCompilationMessages();
 }
 
-function hideCompilationMessages(){
+function onSaveCodeClicked(){
+    hideStatusMessages();
+    $("#statusSavingCode").fadeIn();
+    let code = codeEditor.getValue();
+    let codeLanguage = $("#listLanguage").val();
+    let codeDescription = $("#txtDescription").val();
+    $.ajax({
+        url: '/save',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({
+            'code': code,
+            'codeLanguage': codeLanguage,
+            'codeDescription': codeDescription
+        }),
+        success: function(data){
+            $("#statusCodeSavedTxt").text("Your code was saved successfully. Here is your code tag: "+data);
+            $("#statusCodeSaved").fadeIn();
+        },
+        error: function(){
+            $("#statusCodeSaveFailed").fadeIn();
+        },
+        complete: function(){
+            $("#statusSavingCode").fadeOut();
+            $("#txtDescription").val("");
+        }
+    });
+}
+
+function onResetClicked(){
+    hideStatusMessages();
+    let language = $("#listLanguage").find(":selected").text();
+    switch(language){
+        case "Java": existingJavaCode = defaultJavaText; codeEditor.setValue(existingJavaCode, 1); break;
+        case "C++": existingCPPCode = defaultCPPCode; codeEditor.setValue(existingCPPCode, 1); break;
+        case "C": existingCCode = defaultCCode; codeEditor.setValue(existingCCode, 1); break;
+        case "Python": existingPythonCode = existingPythonCode; codeEditor.setValue(existingPythonCode, 1); break;
+        default: break;
+    }
+}
+
+function hideStatusMessages(){
     if ($("#compilationFailed").is(":visible")){
         $("#compilationFailed").fadeOut();
     }
     if ($("#compilationSuccess").is(":visible")){
         $("#compilationSuccess").fadeOut();
+    }
+    if ($("#statusCodeSaved").is(":visible")){
+        $("#statusCodeSaved").fadeOut();
+    }
+    if ($("#statusCodeSaveFailed").is(":visible")){
+        $("#statusCodeSaveFailed").fadeOut();
+    }
+    if ($("#statusLoadedCode").is(":visible")){
+        $("#statusLoadedCode").fadeOut();
+    }
+    if ($("#statusLoadingCodeFailed").is(":visible")){
+        $("#statusLoadingCodeFailed").fadeOut();
+    }
+    if ($("#statusCodeDoesntExist").is(":visible")){
+        $("#statusCodeDoesntExist").fadeOut();
     }
 }
 
@@ -171,25 +255,25 @@ function onLanguageSelectionClicked(e){
 
 function onLanguageChanged(e){
     switch(e.value){
-        case "java": codeEditor.setValue(existingJavaCode); codeEditor.session.setMode("ace/mode/java"); break;
-        case "cpp": codeEditor.setValue(existingCPPCode); codeEditor.session.setMode("ace/mode/c_cpp"); break;
-        case "c": codeEditor.setValue(existingCCode); codeEditor.session.setMode("ace/mode/c_cpp"); break;
-        case "python": codeEditor.setValue(existingPythonCode); codeEditor.session.setMode("ace/mode/python"); break;
+        case "java": codeEditor.setValue(existingJavaCode, 1); codeEditor.session.setMode("ace/mode/java"); break;
+        case "cpp": codeEditor.setValue(existingCPPCode, 1); codeEditor.session.setMode("ace/mode/c_cpp"); break;
+        case "c": codeEditor.setValue(existingCCode, 1); codeEditor.session.setMode("ace/mode/c_cpp"); break;
+        case "python": codeEditor.setValue(existingPythonCode, 1); codeEditor.session.setMode("ace/mode/python"); break;
         default: break;
     }
     $("#codeOutput").val('Run the code for an output.');
-    hideCompilationMessages();
+    hideStatusMessages();
 }
 
 function onThemeChanged(e){
     if (e.value == "dark"){
-        codeEditor.setTheme("ace/theme/dracula");
+        codeEditor.setTheme("ace/theme/one_dark");
 
         $("body").removeClass("text-dark bg-white");
         $("body").addClass("text-light bg-dark");
 
-        $("#btnRun").removeClass("btn-outline-success");
-        $("#btnRun").addClass("btn-success");
+        $("#btnRun, #btnSaveCode, #btnLoadCode").removeClass("btn-outline-success");
+        $("#btnRun, #btnSaveCode, #btnLoadCode").addClass("btn-success");
 
         $("#btnReset").removeClass("btn-outline-danger");
         $("#btnReset").addClass("btn-danger");
@@ -197,31 +281,34 @@ function onThemeChanged(e){
         $("select").removeClass("text-black bg-white");
         $("select").addClass("text-white bg-dark");
 
-        $("#codeInput").removeClass("text-black bg-light");
-        $("#codeInput").addClass("text-white bg-secondary");
+        $("#codeInput, #codeOutput, #txtDescription, #txtCodeTag").removeClass("text-black");
+        $("#codeInput, #codeOutput, #txtDescription, #txtCodeTag").addClass("text-white bg-dark");
 
-        $("#codeOutput").removeClass("text-black bg-light");
-        $("#codeOutput").addClass("text-white bg-secondary");
+        $(".loading-card").removeClass("text-primary");
+        $(".loading-card").addClass("text-white bg-primary");
 
-        $("#execStatus").removeClass("text-primary");
-        $("#execStatus").addClass("text-white bg-primary");
+        $(".success-card").removeClass("text-success");
+        $(".success-card").addClass("bg-success text-white");
 
-        $("#compilationSuccess").removeClass("text-success");
-        $("#compilationSuccess").addClass("bg-success text-white");
-
-        $("#compilationFailed").removeClass("text-danger");
-        $("#compilationFailed").addClass("bg-danger text-white");
+        $(".error-card").removeClass("text-danger");
+        $(".error-card").addClass("bg-danger text-white");
 
         $("#btnClose").removeClass("btn-close-black");
         $("#btnClose").addClass("btn-close-white");
+
+        $("#btnSave").removeClass("btn-outline-primary");
+        $("#btnSave").addClass("btn-primary");
+
+        $("#txtCodeTag").removeClass("text-black bg-white");
+        $("#txtCodeTag").addClass("text-white bg-dark");        
     }else{
-        codeEditor.setTheme("ace/theme/clouds");
+        codeEditor.setTheme("ace/theme/dawn");
 
         $("body").removeClass("text-light bg-dark");
         $("body").addClass("text-dark bg-white");
 
-        $("#btnRun").removeClass("btn-success");
-        $("#btnRun").addClass("btn-outline-success");
+        $("#btnRun, #btnSaveCode, #btnLoadCode").removeClass("btn-success");
+        $("#btnRun, #btnSaveCode, #btnLoadCode").addClass("btn-outline-success");
 
         $("#btnReset").removeClass("btn-danger");
         $("#btnReset").addClass("btn-outline-danger");
@@ -229,11 +316,8 @@ function onThemeChanged(e){
         $("select").removeClass("text-white bg-dark");
         $("select").addClass("text-black bg-white");
 
-        $("#codeInput").removeClass("text-white bg-secondary");
-        $("#codeInput").addClass("text-black bg-light");
-
-        $("#codeOutput").removeClass("text-white bg-secondary");
-        $("#codeOutput").addClass("text-black bg-light");
+        $("#codeInput, #codeOutput, #txtDescription, #txtCodeTag").removeClass("text-white bg-dark");
+        $("#codeInput, #codeOutput, #txtDescription, #txtCodeTag").addClass("text-black");
 
         $("#execStatus").removeClass("text-white bg-primary");
         $("#execStatus").addClass("text-primary");
@@ -246,5 +330,11 @@ function onThemeChanged(e){
         
         $("#btnClose").removeClass("btn-close-white");
         $("#btnClose").addClass("btn-close-black");
+
+        $("#btnSave").removeClass("btn-primary");
+        $("#btnSave").addClass("btn-outline-primary");
+
+        $("#txtCodeTag").removeClass("text-white bg-dark");
+        $("#txtCodeTag").addClass("text-black bg-white");
     }
 }
