@@ -23,6 +23,7 @@ function initializeElements(){
     $(".loading-card").hide();
     $(".error-card").hide();
     $(".success-card").hide();
+    $("#btnViewDescription").hide();
     codeEditor.session.setMode("ace/mode/java");
 }
 
@@ -105,6 +106,10 @@ function hideModal(){
     $("#exampleModal").modal('toggle');
 }
 
+function showModal(){
+    $("#exampleModal").modal('show');
+}
+
 function onRunClicked(){
     hideStatusMessages();
     $("#execStatus").fadeIn();
@@ -158,7 +163,8 @@ function onLoadCodeClicked(){
                     onLanguageSelectionClicked();
                     onLanguageChanged({value: data.codeLanguage});
                     $("#modalDesc").text(data.codeDescription);
-                    $("#exampleModal").modal('show');
+                    $("#btnViewDescription").fadeIn();
+                    showModal();
                 }else{
                     $("#statusCodeDoesntExist").fadeIn();
                 }
@@ -272,6 +278,10 @@ function onLanguageChanged(e){
     hideStatusMessages();
 }
 
+function onViewDescriptionClicked(){
+    showModal();
+}
+
 function onThemeChanged(e){
     if (e.value == "dark"){
         codeEditor.setTheme("ace/theme/one_dark");
@@ -281,6 +291,9 @@ function onThemeChanged(e){
 
         $("#btnRun, #btnSaveCode, #btnLoadCode").removeClass("btn-outline-success");
         $("#btnRun, #btnSaveCode, #btnLoadCode").addClass("btn-success");
+
+        $("#btnViewDescription").removeClass("btn-outline-primary");
+        $("#btnViewDescription").addClass("btn-primary");
 
         $("#btnReset").removeClass("btn-outline-danger");
         $("#btnReset").addClass("btn-danger");
@@ -316,6 +329,9 @@ function onThemeChanged(e){
 
         $("#btnRun, #btnSaveCode, #btnLoadCode").removeClass("btn-success");
         $("#btnRun, #btnSaveCode, #btnLoadCode").addClass("btn-outline-success");
+
+        $("#btnViewDescription").removeClass("btn-primary");
+        $("#btnViewDescription").addClass("btn-outline-primary");
 
         $("#btnReset").removeClass("btn-danger");
         $("#btnReset").addClass("btn-outline-danger");
