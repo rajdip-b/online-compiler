@@ -98,16 +98,36 @@ function configureAce(){
     editorLib.init();
 }
 
+function onSaveCodeToMachineClicked(){
+    hideSaveCodeModal();
+    var blob = new Blob([codeEditor.getValue()], {type: "text/plain;charset=utf-8"});
+    saveAs(blob, $("#txtCodeName").val()+"."+$("#listLanguage").val());
+    $("#savedCodeInfoModal").modal('show');
+}
+
+function onDownloadClicked(){
+    $("#txtCodeExtention").text("."+$("#listLanguage").val());
+    $("#saveCodeModal").modal('show');
+}
+
 function onCloseClicked(e){
     $(e).parent().fadeOut();
 }
 
-function hideModal(){
-    $("#exampleModal").modal('toggle');
+function hideDescriptionModal(){
+    $("#descriptionModal").modal('toggle');
 }
 
-function showModal(){
-    $("#exampleModal").modal('show');
+function hideSaveCodeModal(){
+    $("#saveCodeModal").modal('toggle');
+}
+
+function showDescriptionModal(){
+    $("#descriptionModal").modal('show');
+}
+
+function hideCodeSavedInfoModal(){
+    $("#savedCodeInfoModal").modal('toggle');
 }
 
 function onRunClicked(){
@@ -164,7 +184,7 @@ function onLoadCodeClicked(){
                     onLanguageChanged({value: data.codeLanguage});
                     $("#modalDesc").text(data.codeDescription);
                     $("#btnViewDescription").fadeIn();
-                    showModal();
+                    showDescriptionModal();
                 }else{
                     $("#statusCodeDoesntExist").fadeIn();
                 }
@@ -280,7 +300,7 @@ function onLanguageChanged(e){
 }
 
 function onViewDescriptionClicked(){
-    showModal();
+    showDescriptionModal();
 }
 
 function onThemeChanged(e){
@@ -293,8 +313,8 @@ function onThemeChanged(e){
         $("#btnRun, #btnSaveCode, #btnLoadCode").removeClass("btn-outline-success");
         $("#btnRun, #btnSaveCode, #btnLoadCode").addClass("btn-success");
 
-        $("#btnViewDescription").removeClass("btn-outline-primary");
-        $("#btnViewDescription").addClass("btn-primary");
+        $("#btnViewDescription, #btnDownload").removeClass("btn-outline-primary");
+        $("#btnViewDescription, #btnDownload").addClass("btn-primary");
 
         $("#btnReset").removeClass("btn-outline-danger");
         $("#btnReset").addClass("btn-danger");
@@ -331,8 +351,8 @@ function onThemeChanged(e){
         $("#btnRun, #btnSaveCode, #btnLoadCode").removeClass("btn-success");
         $("#btnRun, #btnSaveCode, #btnLoadCode").addClass("btn-outline-success");
 
-        $("#btnViewDescription").removeClass("btn-primary");
-        $("#btnViewDescription").addClass("btn-outline-primary");
+        $("#btnViewDescription, #btnDownload").removeClass("btn-primary");
+        $("#btnViewDescription, #btnDownload").addClass("btn-outline-primary");
 
         $("#btnReset").removeClass("btn-danger");
         $("#btnReset").addClass("btn-outline-danger");
