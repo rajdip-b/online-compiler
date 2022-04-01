@@ -220,6 +220,7 @@ function onSaveCodeClicked(){
 
 function onResetClicked(){
     hideStatusMessages();
+    $("#codeOutput").text("Run the code for an output.");
     let language = $("#listLanguage").find(":selected").text();
     switch(language){
         case "Java": existingJavaCode = defaultJavaText; codeEditor.setValue(existingJavaCode, 1); break;
