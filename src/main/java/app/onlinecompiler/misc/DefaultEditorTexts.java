@@ -10,7 +10,7 @@ public class DefaultEditorTexts {
             "import java.util.*;\n" +
             "\n" +
             "public class MyClass {\n" +
-            "\tpublic static void main(String args[]) {\n" +
+            "\tpublic static void main(String args[]) {\n\n" +
             "\t}\n" +
             "}\n";
 
