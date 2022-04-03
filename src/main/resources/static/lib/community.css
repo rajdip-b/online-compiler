@@ -1,0 +1,18 @@
+.code-view{
+    transition: all 150ms ease-in-out;
+}
+
+.code-view:hover {
+    /* transform: scale(1.02); */
+    transform: translateY(-7px) scale(1.02);
+    box-shadow: 5px 5px 20px 5px #cecece;
+}
+
+.basic-hover{
+    transition: all 150ms ease-in-out;
+}
+
+.basic-hover:hover{
+    transform: scale(1.02);
+    box-shadow: 5px 5px 20px 5px #cecece;
+}

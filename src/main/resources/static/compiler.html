@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <link rel="stylesheet" href="lib/index.css"> -->
-    <link rel="stylesheet" href="https://d21kkv08caclr3.cloudfront.net/online-compiler/index.css">
+    <!-- <link rel="stylesheet" href="lib/compiler.css"> -->
+    <link rel="stylesheet" href="https://d21kkv08caclr3.cloudfront.net/online-compiler/compiler.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
@@ -19,14 +19,36 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js" integrity="sha512-csNcFYJniKjJxRWRV1R7fvnXrycHP6qDR21mgz1ZP55xY5d+aHLfo9/FcGDQLfn2IfngbAHd8LdfsagcCqgTcQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
-    <!-- <script src="lib/index.js"></script> -->
-    <script src="https://d21kkv08caclr3.cloudfront.net/online-compiler/index.js"></script>
-    <title>Online CodeCompiler</title>
+    <!-- <script src="lib/compiler.js"></script> -->
+    <script src="https://d21kkv08caclr3.cloudfront.net/online-compiler/compiler.js"></script>
+    <title>Online CodeCompiler - Compiler</title>
 </head>
 <body>
+    <nav class="navbar navbar-dark navbar-expand-lg p-3 bg-success">
+        <a class="navbar-brand" href="/home">Online CodeCompiler</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse " id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/home">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/compiler">Compiler</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/community">Community</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="https://github.com/rajdip-b/online-compiler">GitHub</a>
+              </li>
+          </ul>
+        </div>
+      </nav>
     <div class="container">
         <div class="top-section justify-content-around row mt-5 p-2">
-            <select id="listLanguage" class="form-select col-sm mb-2" style="margin-right: 10%; margin-left: 10%;" onchange="onLanguageChanged(this)" onclick="onLanguageSelectionClicked(this)">
+            <select id="listLanguage" class="   form-select col-sm mb-2" style="margin-right: 10%; margin-left: 10%;" onchange="onLanguageChanged(this)" onclick="onLanguageSelectionClicked(this)">
                 <option value="java">Java</option>
                 <option value="cpp">C++</option>
                 <option value="c">C</option>
@@ -73,13 +95,19 @@
             
         </div>
         <div class="row justify-content-between mt-4 mb-5 p-2">
-            <div class="col-lg-7 border rounded p-3 mt-3 border-grey">
+            <div class="me-1 col-lg-6 border rounded p-3 mt-3 border-grey">
                 <div class="h4">Save your code</div>
-                <div class="mb-4">Save your current work for future use. This code can be shared with your freinds.</div>
+                <div class="mb-4">Save your current work for future use. This code can be shared with your freinds or it can be globally accessible by the community.</div>
                 <div>
+
+                <div class="h6 mb-4">Codes saved for private only would be deleted after 30 days from creation while codes saved for community would persist.</div>
+                    <div class="h6 mb-2">Give a title to your code.</div>
+                    <input type="text" id="txtTitle" class="form-control rounded mb-3" placeholder="Enter title (required)"></textarea>
                     <div class="h6 mb-2">Provide a little bit of description that would pop up everytime someone views your code.</div>
-                    <textarea id="txtDescription" class="w-100 border border-grey form-control rounded mb-1" placeholder="Enter code description in less that 500 words (Note that this is optional.)" name="" id="" cols="44" rows="10"></textarea>
-                    <button id="btnSaveCode" class="btn btn-outline-success w-25" onclick="onSaveCodeClicked()">Save code</button>
+                    <textarea id="txtDescription" class="form-control mb-1" placeholder="Enter code description in less that 500 words (Note that this is optional.)" name="" id="" cols="44" rows="10"></textarea>
+                    <input type="text" class="mt-3 mb-4 form-control" id="txtAuthor" placeholder="Enter your name for the community">
+                    <button id="btnSaveForCommunity" class="btn btn-outline-success w-auto" onclick="showSaveForCommunityModal()">Save for community</button>
+                    <button id="btnSaveForSelf" class="btn btn-outline-success w-auto" onclick="onSaveForSelfClicked()">Save for self</button>
 
                     <div id="statusSavingCode" class="loading-card row p-3 mb-3 mt-3 border border-primary text-primary rounded">Saving your code...</div>
 
@@ -94,39 +122,56 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-5 border rounded p-3 mt-3 border-grey h-50">
-                <div class="h4">Load up a code</div>
-                <div class="mb-4">If you have the code tag of you friends' code, feel free to look into their work! Just paste the code below and load it up.</div>
-                <div class="h6 mb-2">The code would be automatically deleted after 30 days.</div>
-                <input id="txtCodeTag" class="form-control mb-2" placeholder="Enter code tag" type="text" name="" id="">
-                <button id="btnLoadCode" class="btn btn-outline-success w-25" onclick="onLoadCodeClicked()">Load code</button>
-                <button id="btnViewDescription" class="btn btn-outline-primary" onclick="onViewDescriptionClicked()">View Description</button>
-
-                <div id="statusLoadingCode" class="loading-card row p-3 mb-3 mt-3 border border-primary text-primary rounded">Loading the code...</div>
-                <div id="statusLoadedCode" class="success-card row p-3 mb-3 mt-3 border border-success text-success rounded">
-                    <div class="col">Code loaded successfully!</div>
-                    <button id="btnClose" type="button" class="btn-close btn-close-black align-self-end" aria-label="Close" onclick="onCloseClicked(this)"></button>
-                </div>  
-                <div id="statusLoadingCodeFailed" class="error-card row p-3 mb-3 mt-3 border border-danger text-danger rounded">
-                    <div class="col">Error while loading code!</div>
-                    <button id="btnClose" type="button" class="btn-close btn-close-black align-self-end" aria-label="Close" onclick="onCloseClicked(this)"></button>
+            <div class="col-lg-5">
+                <div class=" border rounded p-3 mt-3 border-grey h-auto">
+                    <div class="h4">Load up a code</div>
+                    <div class="mb-4">If you have the code tag of you friends' code, feel free to look into their work! Just paste the code below and load it up.</div>
+                    <input id="txtCodeTag" class="form-control mb-2" placeholder="Enter code tag" type="text">
+                    <button id="btnLoadCode" class="w-auto btn btn-outline-success" onclick="onLoadCodeClicked()">Load code</button>
+                    <button id="btnViewDescription" class="btn btn-outline-primary" onclick="onViewDescriptionClicked()">View Description</button>
+    
+                    <div id="statusLoadingCode" class="loading-card row p-3 mb-3 mt-3 border border-primary text-primary rounded">Loading the code...</div>
+                    <div id="statusLoadedCode" class="success-card row p-3 mb-3 mt-3 border border-success text-success rounded">
+                        <div class="col">Code loaded successfully!</div>
+                        <button id="btnClose" type="button" class="btn-close btn-close-black align-self-end" aria-label="Close" onclick="onCloseClicked(this)"></button>
+                    </div>  
+                    <div id="statusLoadingCodeFailed" class="error-card row p-3 mb-3 mt-3 border border-danger text-danger rounded">
+                        <div class="col">Error while loading code!</div>
+                        <button id="btnClose" type="button" class="btn-close btn-close-black align-self-end" aria-label="Close" onclick="onCloseClicked(this)"></button>
+                    </div>
+                    <div id="statusCodeDoesntExist" class="error-card row p-3 mb-3 mt-3 border border-danger text-danger rounded">
+                        <div class="col">Error while loading code! Code doesn't exist.</div>
+                        <button id="btnClose" type="button" class="btn-close btn-close-black align-self-end" aria-label="Close" onclick="onCloseClicked(this)"></button>
+                    </div> 
                 </div>
-                <div id="statusCodeDoesntExist" class="error-card row p-3 mb-3 mt-3 border border-danger text-danger rounded">
-                    <div class="col">Error while loading code! Code doesn't exist.</div>
-                    <button id="btnClose" type="button" class="btn-close btn-close-black align-self-end" aria-label="Close" onclick="onCloseClicked(this)"></button>
-                </div> 
+                <div id="sectionUpdateCode" class="border rounded p-3 mt-3 border-grey h-auto">
+                    <div class="h4">Update this code</div>
+                    <div class="mb-4">If you feel that you have made a significant change to the code, feel free to update it. You may also save it as a new code but that's upto you. :)</div>
+                    <button id="btnUpdateCode" class="btn btn-outline-success w-25" onclick="onUpdateCodeClicked()">Update code</button>
+    
+                    <div id="statusUpdatingCode" class="loading-card row p-3 mb-3 mt-3 border border-primary text-primary rounded">Updating the code...</div>
+                    <div id="statusUpdatedCode" class="success-card row p-3 mb-3 mt-3 border border-success text-success rounded">
+                        <div class="col">Code updated successfully!</div>
+                        <button id="btnClose" type="button" class="btn-close btn-close-black align-self-end" aria-label="Close" onclick="onCloseClicked(this)"></button>
+                    </div>  
+                    <div id="statusUpdatingCodeFailed" class="error-card row p-3 mb-3 mt-3 border border-danger text-danger rounded">
+                        <div class="col">Error while updating code!</div>
+                        <button id="btnClose" type="button" class="btn-close btn-close-black align-self-end" aria-label="Close" onclick="onCloseClicked(this)"></button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <div class="modal fade" id="descriptionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="descriptionModal" tabindex="-1" role="dialog" aria-labelledby="codeDescription" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title text-black" id="exampleModalLabel">Code description</h5>
+                    <h5 class="modal-title text-black" id="modalCodeTitle">Code title</h5>
                     <button onclick="hideDescriptionModal()" type="button" class="close btn btn-close" data-dismiss="modal" aria-label="Close">
                     </button>
                 </div>
-                <div id="modalDesc" class="modal-body text-black">
+                <div class="modal-body text-black">
+                    <div id="modalDesc"></div>
                 </div>
                 <div class="modal-footer">
                     <button onclick="hideDescriptionModal()" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -168,6 +213,23 @@
                     <h5 class="modal-title text-black" id="exampleModalLabel">Your code has been saved locally!</h5>
                     <button onclick="hideCodeSavedInfoModal()" type="button" class="close btn btn-close" data-dismiss="modal" aria-label="Close">
                     </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="saveForCommunityModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body text-black">
+                    <div>
+                        Since this site is built for community usage, we dont keep any track of the codes that you post. It's all upto you to keep
+                        the code resonable and user friendly. We ask you to verify your code before posting it to the community, ensuring that it would be of use
+                        to other users, keeping in mind of a long term fair use of this community. Thank you.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button onclick="onSaveForCommunityClicked()" type="button" class="btn btn-success" data-dismiss="modal">I understand. Post my code.</button>
+                    <button onclick="hideSaveForCommunityModal()" type="button" class="btn btn-danger" data-dismiss="modal">I'm not quite sure</button>
                 </div>
             </div>
         </div>

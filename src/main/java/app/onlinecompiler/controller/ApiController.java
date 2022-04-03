@@ -10,6 +10,7 @@ import app.onlinecompiler.coderunner.JavaCodeRunner;
 import app.onlinecompiler.misc.DefaultEditorTexts;
 import app.onlinecompiler.model.SavedCode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,9 +31,19 @@ public class ApiController {
         }
     }
 
-    @PostMapping(value = "/save", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public String saveCode(@RequestBody SavedCode savedCode){
-        return savedCodeService.save(savedCode);
+    @PostMapping(value = "/saveForSelf", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public String saveCodeForPrivate(@RequestBody SavedCode savedCode){
+        return savedCodeService.saveCodeForPrivate(savedCode);
+    }
+
+    @PostMapping(value = "/saveForCommunity", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public String saveCodeForCommunity(@RequestBody SavedCode savedCode){
+        return savedCodeService.saveCodeForCommunity(savedCode);
+    }
+
+    @GetMapping(value = "/searchCommunityCodes/{query}/{page}")
+    public Page<SavedCode> searchCommunityCodes(@PathVariable String query, @PathVariable Integer page, @RequestParam("sortBy") Integer sortBy, @RequestParam("sortOrder") Integer sortOrder){
+        return savedCodeService.searchCommunityCodes(query, page, sortBy, sortOrder);
     }
 
     @GetMapping(value = "/code", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -58,6 +69,16 @@ public class ApiController {
     @GetMapping("/text/python")
     public String getPythonDefaultEditorText(){
         return DefaultEditorTexts.PYTHON;
+    }
+
+    @PutMapping(value = "/updateCode", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public boolean updateCode(@RequestBody SavedCode savedCode){
+        return savedCodeService.updateCode(savedCode);
+    }
+
+    @DeleteMapping(value = "/deleteCode/{codeTag}")
+    public boolean deleteCode(@PathVariable String codeTag){
+        return savedCodeService.deleteCode(codeTag);
     }
 
 }

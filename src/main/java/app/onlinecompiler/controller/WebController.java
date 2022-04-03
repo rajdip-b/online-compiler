@@ -6,8 +6,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class WebController {
 
-    @GetMapping(value = {"/", "/index"})
-    public String index(){
-        return "index";
+    @GetMapping(value = "/compiler")
+    public String compiler(){
+        return "compiler";
+    }
+
+    @GetMapping(value = {"/", "/home"})
+    public String home(){
+        return "home";
+    }
+
+    @GetMapping(value = "/community")
+    public String community(){
+        return "community";
     }
 }

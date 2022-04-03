@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online CodeCompiler - Community</title>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <!-- <link rel="stylesheet" href="lib/community.css"> -->
+    <!-- <script src="lib/community.js"></script> -->
+    <script src="https://d21kkv08caclr3.cloudfront.net/online-compiler/community.js"></script>
+    <link rel="stylesheet" href="https://d21kkv08caclr3.cloudfront.net/online-compiler/community.css">
+</head>
+<body>
+    <nav class="navbar navbar-dark navbar-expand-lg p-3 bg-success">
+        <a class="navbar-brand" href="/home">Online CodeCompiler</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse " id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/home">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/compiler">Compiler</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/community">Community</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="https://github.com/rajdip-b/online-compiler">GitHub</a>
+              </li>
+          </ul>
+        </div>
+      </nav>
+    <div class="h2 mt-4 text-center mb-5">Browse community codes here</div>
+    <div class="container">
+        <div class="row justify-content-around m-2 mb-4">
+            <input id="txtSearch" type="text" class="border border-grey basic-hover p-2 col-12 col-md-7" placeholder="Search for code" onkeyup="onSearchTextChanged()">
+            <select id="listSortBy" class="border border-grey rounded basic-hover p-2 col-6 bg-light col-md-2" onchange="onSortByChanged()">
+                <option value="1">Created on</option>
+                <option value="2">Code title</option>
+                <option value="3">Code language</option>
+                <option value="4">Author</option>
+            </select>
+            <select id="listSortOrder" class="border border-grey rounded basic-hover p-2 bg-light col-6 col-md-2" onchange="onSortOrderChanged()">
+                <option value="1">Ascending</option>
+                <option value="2">Descending</option>
+            </select>
+        </div>
+        <div id="code-views">
+        </div>
+    </div>
+    <nav class="mt-4">
+        <ul  class="pagination justify-content-center">
+          <li id="btnPrev" class="page-item">
+            <a  class="page-link" href="#" tabindex="-1" onclick="onLinkPrevPageClicked()">Previous</a>
+          </li>
+          <li class="page-item " id="linkPreviousPage"><a class="page-link" href="#" onclick="onLinkPrevPageClicked()">2</a></li>
+          <li class="page-item active"><a id="linkCurrentPage" class="page-link" href="#">0</a></li>
+          <li class="page-item " id="linkNextPage"><a class="page-link" href="#" onclick="onLinkNextPageClicked()">2</a></li>
+          <li id="btnNext" class="page-item">
+            <a  class="page-link" href="#" onclick="onLinkNextPageClicked()">Next</a>
+          </li>
+        </ul>
+    </nav>
+    <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" role="dialog" aria-labelledby="codeDescription" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="h4 text-danger">Alert!</div>
+                </div>
+                <div class="modal-body text-black">
+                    <div>This code might belong to someone else and might be important for the community. Once deleted, there would be no way to recover
+                        this code. Delete only if you find the code repetative/redundant/irrelevant. Proceed?
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button onclick="deleteCode()" type="button" class="btn btn-success" data-dismiss="modal">Yes</button>
+                    <button onclick="toggleDeleteConfirmationModal()" type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="deleteStatusModal" tabindex="-1" role="dialog" aria-labelledby="codeDescription" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body text-black">
+                    <div id="deleteStatus"></div>
+                </div>
+                <div class="modal-footer">
+                    <button onclick="toggleDeleteStatusModal()" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

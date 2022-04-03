@@ -19,13 +19,15 @@ public class SavedCode {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonIgnore
     private Integer id;
-    @JsonIgnore
     private String codeTag;
+    private String codeTitle;
     private String code;
     private String codeLanguage;
-    @JsonIgnore
     private Date expiresOn;
     private String codeDescription;
     private String codeInput;
+    private String author;
+    @JsonIgnore
+    private String codeType;
 
 }
