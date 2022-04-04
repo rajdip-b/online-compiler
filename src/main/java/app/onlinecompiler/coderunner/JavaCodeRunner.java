@@ -66,7 +66,7 @@ public class JavaCodeRunner{
             String[] commands = {
                     "/bin/bash",
                     "-c",
-                    MessageFormat.format("javac {0}/{1}.java && java {0}/{1}.java < {0}/input.txt; rm -rf {0}", folderName, className)
+                    MessageFormat.format("javac {0}/{1}.java && timeout 5s java {0}/{1}.java < {0}/input.txt; rm -rf {0}", folderName, className)
             };
             Process proc = null;
             proc = rt.exec(commands);

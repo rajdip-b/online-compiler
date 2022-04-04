@@ -54,7 +54,7 @@ public class CPPCodeRunner{
             String[] commands = {
                     "/bin/bash",
                     "-c",
-                    MessageFormat.format("g++ -o {0}/output {0}/{1}.cpp && ./{0}/output < {0}/input.txt; rm -rf {0}", folderName, fileName)
+                    MessageFormat.format("g++ -o {0}/output {0}/{1}.cpp && timeout 5s ./{0}/output < {0}/input.txt; rm -rf {0}", folderName, fileName)
             };
             Process proc = null;
             proc = rt.exec(commands);

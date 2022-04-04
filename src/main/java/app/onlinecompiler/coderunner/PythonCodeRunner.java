@@ -54,7 +54,7 @@ public class PythonCodeRunner{
             String[] commands = {
                     "/bin/bash",
                     "-c",
-                    MessageFormat.format("python3 {0}/code.py < {0}/input.txt; rm -rf {0}", folderName, fileName)
+                    MessageFormat.format("timeout 5s python3 {0}/code.py < {0}/input.txt; rm -rf {0}", folderName, fileName)
             };
             Process proc = null;
             proc = rt.exec(commands);

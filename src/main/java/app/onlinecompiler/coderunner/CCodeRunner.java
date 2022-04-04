@@ -54,7 +54,7 @@ public class CCodeRunner{
             String[] commands = {
                     "/bin/bash",
                     "-c",
-                    MessageFormat.format("gcc -o {0}/output {0}/{1}.c && ./{0}/output < {0}/input.txt; rm -rf {0}", folderName, fileName)
+                    MessageFormat.format("gcc -o {0}/output {0}/{1}.c && timeout 5s ./{0}/output < {0}/input.txt; rm -rf {0}", folderName, fileName)
             };
             Process proc = null;
             proc = rt.exec(commands);
